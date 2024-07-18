@@ -29,7 +29,8 @@ void searchPerson(void *pBuffer, void *mananger);
 void printList(void *mananger);
 void freeMemory(void *pBuffer, void *mananger);
 
-int main() {
+int main()
+{
     // Buffer principal
     void *pBuffer = malloc(sizeof(int) + sizeof(int) + NAME + sizeof(int) + 4 * sizeof(void *));
     SIZE_LIST = 0;
@@ -39,30 +40,32 @@ int main() {
     START = NULL;
     FINAL = NULL;
 
-    do {
+    do
+    {
         printf("Menu:\n1. Adicionar pessoa\n2. Remover pessoa\n3. Buscar pessoa\n4. Imprimir lista\n5. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", TEMP_OPTION);
 
-        switch (*TEMP_OPTION) {
-            case 1:
-                addPerson(pBuffer, mananger);
-                break;
-            case 2:
-                removePerson(pBuffer, mananger);
-                break;
-            case 3:
-                searchPerson(pBuffer, mananger);
-                break;
-            case 4:
-                printList(mananger);
-                break;
-            case 5:
-                printf("Saindo...\n");
-                break;
-            default:
-                printf("Opcao invalida!\n");
-                break;
+        switch (*TEMP_OPTION)
+        {
+        case 1:
+            addPerson(pBuffer, mananger);
+            break;
+        case 2:
+            removePerson(pBuffer, mananger);
+            break;
+        case 3:
+            searchPerson(pBuffer, mananger);
+            break;
+        case 4:
+            printList(mananger);
+            break;
+        case 5:
+            printf("Saindo...\n");
+            break;
+        default:
+            printf("Opcao invalida!\n");
+            break;
         }
     } while (*TEMP_OPTION != 5);
 
@@ -70,7 +73,8 @@ int main() {
     return 0;
 }
 
-void addPerson(void *pBuffer, void *mananger) {
+void addPerson(void *pBuffer, void *mananger)
+{
     void *newNode = malloc(PREVIOUS_LINK + sizeof(void *) * 2);
 
     printf("Digite o nome (ate 9 caracteres): ");
@@ -83,7 +87,8 @@ void addPerson(void *pBuffer, void *mananger) {
     void **prev = NULL;
     void **curr = &START;
 
-    while (*curr != NULL && strcmp((char *)newNode, (char *)*curr) > 0) {
+    while (*curr != NULL && strcmp((char *)newNode, (char *)*curr) > 0)
+    {
         prev = curr;
         curr = (void **)((char *)(*curr) + NEXT_LINK);
     }
@@ -91,51 +96,66 @@ void addPerson(void *pBuffer, void *mananger) {
     *(void **)((char *)newNode + PREVIOUS_LINK) = prev ? *prev : NULL;
     *(void **)((char *)newNode + NEXT_LINK) = *curr;
 
-    if (prev) {
+    if (prev)
+    {
         *(void **)((char *)*prev + NEXT_LINK) = newNode;
-    } else {
+    }
+    else
+    {
         START = newNode;
     }
 
-    if (*curr) {
+    if (*curr)
+    {
         *(void **)((char *)*curr + PREVIOUS_LINK) = newNode;
-    } else {
+    }
+    else
+    {
         FINAL = newNode;
     }
 
     SIZE_LIST++;
 }
 
-void removePerson(void *pBuffer, void *mananger) {
+void removePerson(void *pBuffer, void *mananger)
+{
     printf("Digite o nome da pessoa a ser removida (ate 9 caracteres): ");
     scanf("%9s", TEMP_NAME);
 
     // Search for the node to be removed
     void **prev = NULL;
     void **curr = &START;
-    while (*curr != NULL && strcmp(TEMP_NAME, (char *)*curr) != 0) {
+    while (*curr != NULL && strcmp(TEMP_NAME, (char *)*curr) != 0)
+    {
         prev = curr;
         curr = (void **)((char *)(*curr) + NEXT_LINK);
     }
 
     // Node not found
-    if (*curr == NULL) {
+    if (*curr == NULL)
+    {
         printf("Pessoa nao encontrada.\n");
         return;
     }
 
     // Update previous node's NEXT_LINK
-    if (prev != NULL) {
+    if (prev != NULL)
+    {
         *(void **)((char *)*prev + NEXT_LINK) = *(void **)((char *)*curr + NEXT_LINK);
-    } else {
+    }
+    else
+    {
         START = *(void **)((char *)*curr + NEXT_LINK);
     }
 
     // Update next node's PREVIOUS_LINK if it's not FINAL
     void **next = *(void **)((char *)*curr + NEXT_LINK);
-    if (next != FINAL) {
+    if (next != FINAL)
+    {
         *(void **)((char *)next + PREVIOUS_LINK) = prev;
-    } else {
+    }
+    else
+    {
         FINAL = prev;
     }
 
@@ -147,20 +167,24 @@ void removePerson(void *pBuffer, void *mananger) {
     printf("Pessoa removida com sucesso.\n");
 }
 
-
-void searchPerson(void *pBuffer, void *mananger) {
+void searchPerson(void *pBuffer, void *mananger)
+{
     printf("Digite o nome da pessoa a ser buscada (ate 9 caracteres): ");
     scanf("%9s", TEMP_NAME);
 
     *TEMP_RESULT = START;
 
-    while (*TEMP_RESULT != NULL && strcmp(TEMP_NAME, (char *)*TEMP_RESULT) != 0) {
+    while (*TEMP_RESULT != NULL && strcmp(TEMP_NAME, (char *)*TEMP_RESULT) != 0)
+    {
         *TEMP_RESULT = *(void **)((char *)(*TEMP_RESULT) + NEXT_LINK);
     }
 
-    if (*TEMP_RESULT == NULL) {
+    if (*TEMP_RESULT == NULL)
+    {
         printf("Pessoa nao encontrada.\n");
-    } else {
+    }
+    else
+    {
         printf("Pessoa encontrada: Nome: %s, Idade: %d, E-mail: %s\n",
                (char *)*TEMP_RESULT,
                *(int *)((char *)(*TEMP_RESULT) + NAME),
@@ -168,9 +192,11 @@ void searchPerson(void *pBuffer, void *mananger) {
     }
 }
 
-void printList(void *mananger) {
+void printList(void *mananger)
+{
     void *current = START;
-    while (current != NULL) {
+    while (current != NULL)
+    {
         printf("Nome: %s, Idade: %d, E-mail: %s\n",
                (char *)current,
                *(int *)(current + NAME),
@@ -179,11 +205,13 @@ void printList(void *mananger) {
     }
 }
 
-void freeMemory(void *pBuffer, void *mananger) {
+void freeMemory(void *pBuffer, void *mananger)
+{
     void *current = START;
     void *next = NULL;
 
-    while (current != NULL) {
+    while (current != NULL)
+    {
         next = *(void **)((char *)current + NEXT_LINK);
         free(current);
         current = next;
@@ -192,4 +220,3 @@ void freeMemory(void *pBuffer, void *mananger) {
     free(mananger);
     free(pBuffer);
 }
-
