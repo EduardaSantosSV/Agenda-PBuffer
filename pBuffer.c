@@ -21,7 +21,6 @@
 #define TEMP_NODE (void **)(pBuffer + sizeof(int) + NAME + sizeof(int) + sizeof(void *))
 #define TEMP_PREV (void **)(pBuffer + sizeof(int) + NAME + sizeof(int) + 2 * sizeof(void *))
 #define TEMP_NEXT (void **)(pBuffer + sizeof(int) + NAME + sizeof(int) + 3 * sizeof(void *))
-typedef void **Node;
 
 void addPerson(void *pBuffer, void *mananger);
 void removePerson(void *pBuffer, void *mananger);
